@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Container Home — Quest 2 Walkthrough</title>
+<script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+<style>
+  body{margin:0;font-family:system-ui,sans-serif;background:#111;color:#fff}
+  #info{position:fixed;z-index:5;left:12px;top:12px;max-width:340px;padding:12px 14px;border-radius:12px;background:#111c;backdrop-filter:blur(8px);font-size:14px}
+  #info b{display:block;margin-bottom:4px}
+  #info small{opacity:.8}
+  #enter{margin-top:8px;padding:8px 11px;border:0;border-radius:8px;background:#fff;color:#111;font-weight:700}
+</style>
+</head>
+<body>
+<div id="info">
+  <b>Container Home — Quest 2 Concept</b>
+  Walk around the house in VR. The layout uses approximate dimensions from our current concept.
+  <small>Use the Quest controller thumbstick to move. Look at blue markers and select them to jump between viewpoints.</small>
+  <button id="enter">Enter VR</button>
+</div>
+
+<a-scene renderer="antialias:true;colorManagement:true" background="color:#b8d3d7"
+         xr-mode-ui="enabled:true"
+         webxr="optionalFeatures:local-floor, bounded-floor, hand-tracking">
+
+  <a-assets>
+    <a-mixin id="wall" material="color:#d8d0c2;roughness:.85"></a-mixin>
+    <a-mixin id="container" material="color:#252a2c;roughness:.75"></a-mixin>
+    <a-mixin id="wood" material="color:#8b6546;roughness:.8"></a-mixin>
+    <a-mixin id="glass" material="color:#8fb3b8;opacity:.42;transparent:true;roughness:.1"></a-mixin>
+    <a-mixin id="floor" material="color:#b8a58b;roughness:.9"></a-mixin>
+  </a-assets>
+
+  <!-- lighting -->
+  <a-entity light="type:ambient;color:#fff;intensity:1.2"></a-entity>
+  <a-entity light="type:directional;color:#fff;intensity:2" position="-10 12 8"></a-entity>
+
+  <!-- Ground / site -->
+  <a-plane rotation="-90 0 0" width="76" height="80" material="color:#6f8065;roughness:1"></a-plane>
+  <a-plane rotation="-90 0 0" width="72" height="76" position="0 .01 0"
+           material="color:#91a26f;roughness:1"></a-plane>
+
+  <!-- House floor slabs -->
+  <a-box position="-20 .12 0" width="16" height=".24" depth="40" material="color:#b8a58b"></a-box>
+  <a-box position="0 .12 0" width="24" height=".24" depth="28" material="color:#d0c1a9"></a-box>
+  <a-box position="20 .12 0" width="16" height=".24" depth="40" material="color:#b8a58b"></a-box>
+
+  <!-- LEFT 40' WING: two 40' containers side-by-side -->
+  <a-box position="-20 2.0 0" width="16" height="3.76" depth="40" material="color:#252a2c"></a-box>
+  <!-- carve visual room interiors over container front -->
+  <a-box position="-20 2.0 18.9" width="15.2" height="3.35" depth=".12" material="color:#efe8dc"></a-box>
+  <a-box position="-20 2.0 18.84" width="10" height="2.65" depth=".08" material="color:#8fb3b8;opacity:.45;transparent:true"></a-box>
+  <!-- right-side openings / inner face -->
+  <a-box position="-12.05 2.0 0" width=".15" height="3.4" depth="40" material="color:#ddd5c8"></a-box>
+
+  <!-- RIGHT 40' WING -->
+  <a-box position="20 2.0 0" width="16" height="3.76" depth="40" material="color:#252a2c"></a-box>
+  <a-box position="20 2.0 18.9" width="15.2" height="3.35" depth=".12" material="color:#efe8dc"></a-box>
+  <a-box position="20 2.0 18.84" width="10" height="2.65" depth=".08" material="color:#8fb3b8;opacity:.45;transparent:true"></a-box>
+  <a-box position="12.05 2.0 0" width=".15" height="3.4" depth="40" material="color:#ddd5c8"></a-box>
+
+  <!-- CENTRAL BLOCK: 24' wide x 28' deep -->
+  <a-box position="0 2.0 -1" width="24" height="3.8" depth="28" material="color:#d8d0c2"></a-box>
+  <!-- open front / back visual glazing -->
+  <a-box position="0 2.0 12.95" width="21" height="3.1" depth=".12"
+         material="color:#8fb3b8;opacity:.35;transparent:true"></a-box>
+  <a-box position="0 2.0 -14.95" width="21" height="3.1" depth=".12"
+         material="color:#8fb3b8;opacity:.35;transparent:true"></a-box>
+
+  <!-- Gable roof planes (simple visual) -->
+  <a-box position="0 5.0 -1" width="28" height=".28" depth="31" rotation="0 0 -12"
+         material="color:#252a2c"></a-box>
+  <a-box position="0 5.0 -1" width="28" height=".28" depth="31" rotation="0 0 12"
+         material="color:#252a2c"></a-box>
+  <!-- wood ceiling under gable -->
+  <a-box position="0 4.45 -1" width="23" height=".16" depth="26" rotation="0 0 0"
+         material="color:#8b6546"></a-box>
+
+  <!-- Veranda / front deck -->
+  <a-box position="0 .2 16.0" width="28" height=".4" depth="8" material="color:#9c8061"></a-box>
+  <a-box position="-9 2.2 15.5" width=".35" height="4.2" depth=".35" material="color:#2b2d2d"></a-box>
+  <a-box position="9 2.2 15.5" width=".35" height="4.2" depth=".35" material="color:#2b2d2d"></a-box>
+  <a-box position="0 4.2 15.5" width="20" height=".3" depth=".3" material="color:#8b6546"></a-box>
+
+  <!-- Main front door -->
+  <a-box position="0 2.0 12.86" width="3.2" height="3.4" depth=".16" material="color:#714e35"></a-box>
+  <a-box position="0 2.0 12.72" width="2.65" height="2.9" depth=".08" material="color:#8fb3b8;opacity:.22;transparent:true"></a-box>
+
+  <!-- OPEN PLAN furniture -->
+  <!-- living room -->
+  <a-box position="0 .65 5" width="7" height=".35" depth="2.4" material="color:#75695d"></a-box>
+  <a-box position="-5 .65 5" width="2.4" height=".35" depth="6" material="color:#75695d"></a-box>
+  <a-cylinder position="0 .5 1.8" radius="1.2" height=".35" material="color:#8b6546"></a-cylinder>
+  <!-- dining left -->
+  <a-box position="-7 .75 -4" width="6" height=".18" depth="3" material="color:#8b6546"></a-box>
+  <!-- kitchen island toward rear -->
+  <a-box position="3 .8 -9" width="9" height=".9" depth="2.5" material="color:#cfc8bd"></a-box>
+  <!-- laundry block rear-right -->
+  <a-box position="8 .8 -8" width="4" height="1.5" depth="2.5" material="color:#e7e1d7"></a-box>
+
+  <!-- Bedroom furnishings -->
+  <a-box position="-20 .55 8" width="7" height=".45" depth="6" material="color:#e8e0d5"></a-box>
+  <a-box position="-20 .55 -10" width="7" height=".45" depth="6" material="color:#e8e0d5"></a-box>
+  <a-box position="20 .55 7" width="7" height=".45" depth="6" material="color:#e8e0d5"></a-box>
+
+  <!-- compact shared bath/privacy partition -->
+  <a-box position="-12.0 1.8 -1" width=".2" height="3.2" depth="7" material="color:#d8d0c2"></a-box>
+  <a-box position="-14.2 1.8 -1" width="3.8" height="3.2" depth="7" material="color:#ece8df"></a-box>
+
+  <!-- master ensuite / WIR -->
+  <a-box position="14.2 1.8 -4" width="3.6" height="3.2" depth="8" material="color:#ece8df"></a-box>
+
+  <!-- master patio -->
+  <a-box position="20 .25 -15.2" width="12" height=".5" depth="5" material="color:#9c8061"></a-box>
+
+  <!-- rear terrace -->
+  <a-box position="0 .25 -18" width="30" height=".5" depth="5" material="color:#9c8061"></a-box>
+
+  <!-- simple landscaping -->
+  <a-cylinder position="-31 1 15" radius="1.2" height="2" material="color:#3d6440"></a-cylinder>
+  <a-cylinder position="31 1 15" radius="1.2" height="2" material="color:#3d6440"></a-cylinder>
+  <a-cylinder position="-31 1 -15" radius="1.2" height="2" material="color:#3d6440"></a-cylinder>
+  <a-cylinder position="31 1 -15" radius="1.2" height="2" material="color:#3d6440"></a-cylinder>
+
+  <!-- Labels -->
+  <a-text value="LIVING ROOM" position="0 2.8 4" align="center" color="#222" width="8"></a-text>
+  <a-text value="DINING" position="-7 2.8 -4" align="center" color="#222" width="6"></a-text>
+  <a-text value="KITCHEN" position="3 2.8 -9" align="center" color="#222" width="6"></a-text>
+  <a-text value="MASTER BEDROOM" position="20 2.8 7" align="center" color="#fff" width="8"></a-text>
+  <a-text value="BEDROOM 1" position="-20 2.8 8" align="center" color="#fff" width="6"></a-text>
+  <a-text value="BEDROOM 2" position="-20 2.8 -10" align="center" color="#fff" width="6"></a-text>
+
+  <!-- VR teleport/look markers -->
+  <a-entity id="markers">
+    <a-cylinder class="hotspot" position="0 .35 16" radius=".65" height=".08"
+      material="color:#35a7ff;emissive:#168be0;emissiveIntensity:1.5"
+      data-label="Front veranda — centered main entrance"></a-cylinder>
+    <a-cylinder class="hotspot" position="0 .35 8" radius=".65" height=".08"
+      material="color:#35a7ff;emissive:#168be0;emissiveIntensity:1.5"
+      data-label="Living room — open view toward dining and kitchen"></a-cylinder>
+    <a-cylinder class="hotspot" position="-7 .35 -4" radius=".65" height=".08"
+      material="color:#35a7ff;emissive:#168be0;emissiveIntensity:1.5"
+      data-label="Dining area — left of kitchen"></a-cylinder>
+    <a-cylinder class="hotspot" position="3 .35 -10" radius=".65" height=".08"
+      material="color:#35a7ff;emissive:#168be0;emissiveIntensity:1.5"
+      data-label="Kitchen and nearby laundry"></a-cylinder>
+    <a-cylinder class="hotspot" position="-20 .35 8" radius=".65" height=".08"
+      material="color:#35a7ff;emissive:#168be0;emissiveIntensity:1.5"
+      data-label="Bedroom 1 — fixed glass front"></a-cylinder>
+    <a-cylinder class="hotspot" position="-20 .35 -10" radius=".65" height=".08"
+      material="color:#35a7ff;emissive:#168be0;emissiveIntensity:1.5"
+      data-label="Bedroom 2 — compact shared bathroom nearby"></a-cylinder>
+    <a-cylinder class="hotspot" position="20 .35 7" radius=".65" height=".08"
+      material="color:#35a7ff;emissive:#168be0;emissiveIntensity:1.5"
+      data-label="Master bedroom — fixed glass front"></a-cylinder>
+    <a-cylinder class="hotspot" position="20 .35 -15" radius=".65" height=".08"
+      material="color:#35a7ff;emissive:#168be0;emissiveIntensity:1.5"
+      data-label="Master patio"></a-cylinder>
+    <a-cylinder class="hotspot" position="0 .35 -18" radius=".65" height=".08"
+      material="color:#35a7ff;emissive:#168be0;emissiveIntensity:1.5"
+      data-label="Rear terrace — optional pool area"></a-cylinder>
+  </a-entity>
+
+  <!-- Camera rig -->
+  <a-entity id="rig" position="0 1.65 19">
+    <a-camera look-controls wasd-controls="acceleration:18"></a-camera>
+    <a-entity laser-controls="hand: left" raycaster="objects:.hotspot" line="color:#35a7ff"></a-entity>
+    <a-entity laser-controls="hand: right" raycaster="objects:.hotspot" line="color:#35a7ff"></a-entity>
+  </a-entity>
+</a-scene>
+
+<script>
+const rig=document.querySelector('#rig');
+const info=document.querySelector('#info');
+const hotspots=document.querySelectorAll('.hotspot');
+hotspots.forEach(h=>{
+  h.addEventListener('click',()=>{
+    const p=h.getAttribute('position');
+    rig.setAttribute('position',{x:p.x,y:1.65,z:p.z+2});
+    const text=h.dataset.label;
+    info.querySelector('b').textContent=text;
+  });
+});
+document.querySelector('#enter').addEventListener('click',()=>{
+  const scene=document.querySelector('a-scene');
+  if(scene.enterVR) scene.enterVR();
+});
+</script>
+</body>
+</html>
