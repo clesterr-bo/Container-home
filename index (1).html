@@ -1,0 +1,32 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Container Home VR</title>
+<style>html,body{margin:0;height:100%;overflow:hidden;background:#b9d4d8;font-family:Arial}#msg{position:fixed;z-index:10;top:12px;left:12px;right:12px;max-width:500px;background:#111d;color:#fff;padding:14px;border-radius:12px}</style></head><body>
+<div id="msg"><b>Container Home — Quest 2 VR</b><div id="status">Loading…</div></div>
+<script type="module">
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
+import {VRButton} from "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/webxr/VRButton.js";
+
+const scene=new THREE.Scene();scene.background=new THREE.Color(0xb9d4d8);scene.fog=new THREE.Fog(0xb9d4d8,45,110);
+const camera=new THREE.PerspectiveCamera(70,innerWidth/innerHeight,.05,200);
+const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.xr.enabled=true;document.body.appendChild(renderer.domElement);document.body.appendChild(VRButton.createButton(renderer));
+const status=document.getElementById("status");status.textContent="Ready — press ENTER VR.";
+scene.add(new THREE.HemisphereLight(0xffffff,0x526b55,2.2));const sun=new THREE.DirectionalLight(0xffffff,2);sun.position.set(-20,30,20);scene.add(sun);
+const M=c=>new THREE.MeshStandardMaterial({color:c,roughness:.8}), wall=M(0xd8d0c2), dark=M(0x252a2c), wood=M(0x8b6546), floor=M(0xb8a58b), white=M(0xe8e0d5), green=M(0x506b4b), furniture=M(0x766a5d);
+const glass=new THREE.MeshPhysicalMaterial({color:0x9dbcc0,transparent:true,opacity:.38,roughness:.1});
+function box(x,y,z,w,h,d,m,r=0){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.rotation.y=r;scene.add(o);return o}
+box(0,-.12,0,76,.2,80,green);box(-20,.12,0,16,.24,40,floor);box(0,.12,-1,24,.24,28,wall);box(20,.12,0,16,.24,40,floor);
+box(-20,2,0,16,3.76,40,dark);box(20,2,0,16,3.76,40,dark);box(0,2,-1,24,3.8,28,wall);
+box(-20,2,19,15.2,3.35,.12,glass);box(20,2,19,15.2,3.35,.12,glass);box(0,2,12.9,21,3.1,.12,glass);box(0,2,-14.9,21,3.1,.12,glass);
+box(-6.2,5,-1,14,.3,31,dark,THREE.MathUtils.degToRad(-12));box(6.2,5,-1,14,.3,31,dark,THREE.MathUtils.degToRad(12));box(0,4.45,-1,23,.16,26,wood);
+box(0,.25,16,28,.5,8,wood);box(-9,2.2,15.5,.35,4.2,.35,dark);box(9,2.2,15.5,.35,4.2,.35,dark);box(0,4.2,15.5,20,.3,.3,wood);box(0,2,12.8,3.2,3.4,.18,wood);
+box(0,.65,5,7,.35,2.4,furniture);box(-5,.65,5,2.4,.35,6,furniture);box(0,.5,1.8,2.4,.35,2.4,wood);box(-7,.75,-4,6,.18,3,wood);box(3,.8,-9,9,.9,2.5,white);box(8,.8,-8,4,1.5,2.5,white);
+box(-20,.55,8,7,.45,6,white);box(-20,.55,-10,7,.45,6,white);box(20,.55,7,7,.45,6,white);
+box(-12,1.8,-1,.2,3.2,7,wall);box(-14.2,1.8,-1,3.8,3.2,7,white);box(14.2,1.8,-4,3.6,3.2,8,white);box(20,.25,-15.2,12,.5,5,wood);box(0,.25,-18,30,.5,5,wood);
+
+const rig=new THREE.Group();rig.position.set(0,0,19);scene.add(rig);rig.add(camera);camera.position.set(0,1.65,0);
+const spots=[["FRONT VERANDA",0,16],["LIVING ROOM",0,8],["DINING",-7,-4],["KITCHEN",3,-10],["BEDROOM 1",-20,8],["BEDROOM 2",-20,-10],["MASTER",20,7],["MASTER PATIO",20,-15],["REAR TERRACE",0,-18]];
+const sm=new THREE.MeshStandardMaterial({color:0x20a9ff,emissive:0x087cc5,emissiveIntensity:2});
+const controllers=[renderer.xr.getController(0),renderer.xr.getController(1)];controllers.forEach(c=>{scene.add(c);c.addEventListener("selectstart",()=>{const p=new THREE.Vector3();c.getWorldPosition(p);let best=null,bd=4;for(const s of spots){const d=Math.hypot(p.x-s[1],p.z-s[2]);if(d<bd){bd=d;best=s}}if(best){rig.position.set(best[1],0,best[2]+1.2);status.textContent="At "+best[0]+" — use the thumbstick to walk."}})});
+for(const s of spots){const g=new THREE.Mesh(new THREE.CylinderGeometry(.65,.65,.08,32),sm);g.position.set(s[1],.08,s[2]);scene.add(g)}
+function move(){if(!renderer.xr.isPresenting)return;for(const c of controllers){const g=c.gamepad;if(!g||g.axes.length<2)continue;let x=g.axes[2]??g.axes[0],y=g.axes[3]??g.axes[1];if(Math.abs(x)<.15)x=0;if(Math.abs(y)<.15)y=0;const q=new THREE.Quaternion();camera.getWorldQuaternion(q);const v=new THREE.Vector3(x,0,y).applyQuaternion(q);v.y=0;if(v.lengthSq()>0)v.normalize();rig.position.addScaledVector(v,.055*Math.max(Math.abs(x),Math.abs(y)))}} 
+addEventListener("resize",()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});renderer.setAnimationLoop(()=>{move();renderer.render(scene,camera)});
+</script></body></html>
